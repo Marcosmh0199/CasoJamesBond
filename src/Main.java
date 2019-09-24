@@ -1,6 +1,7 @@
 public class Main {
-
+    private static Encriptar encriptar;
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        encriptar = new Encriptar();
+        encriptar.getLlaveTanteo();
     }
 }
