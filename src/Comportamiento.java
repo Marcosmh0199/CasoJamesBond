@@ -23,6 +23,8 @@ public class Comportamiento implements Constantes{
         setSubGrupos();
         setMejoresLetras();
         setMejoresNumeros();
+        aprender(0);
+        afinar();
     }
 
 	public ArrayList<Character> getLetras() {
@@ -117,7 +119,7 @@ public class Comportamiento implements Constantes{
             for(int intentos = 0; intentos < COMBSUBGRUPOS; intentos++){
                 char letra = subGrupos.get(grupos).getLetra((int)doubleRandom(TAMANOSUBGRUPOLETRAS,0.0));
                 char numero = subGrupos.get(grupos).getNumero((int)doubleRandom(TAMANOSUBGRUPONUMERO,0.0));
-                if(tantearLlave(letra,numero)){
+                if(tantearLlave(letra,numero) != null){
                     subGrupos.get(grupos).aumentarFactibilidad();
                 }
             }
@@ -127,18 +129,38 @@ public class Comportamiento implements Constantes{
     
     private void afinar(){
         Collections.sort(subGrupos, (s1, s2) -> Integer.valueOf(s2.getFactibilidad()).compareTo(s1.getFactibilidad()));
-        if(subGrupos.get(1).getFactibilidad() > 0){
-        	subGrupos = new ArrayList<>(subGrupos.subList(0,2));
-        }else{
-        	subGrupos = new ArrayList<>(subGrupos.subList(0,1));
-        }      
+        subGrupos = new ArrayList<>(subGrupos.subList(0,2));     
         for(SubGrupo subGrupo:subGrupos){
             HashSet<Character> letrasTmp = new HashSet(Arrays.asList(subGrupo.getLetras().toArray()));
             mejoresLetras.retainAll(letrasTmp);
             HashSet<Character> numerosTmp = new HashSet(Arrays.asList(subGrupo.getNumeros().toArray()));
             mejoresNumeros.retainAll(numerosTmp);
         }
-        //obtenerLlave();
+        obtenerLlave();
+    }
+    
+    private void obtenerLlave(){
+        ArrayList<Character> letrasAptas = new ArrayList(mejoresLetras);
+        ArrayList<Character> numerosAptos = new ArrayList<>(mejoresNumeros);
+        int contadorIntentos = 0;
+        String posibleLlave = null;
+        while (posibleLlave == null){
+        	posibleLlave = tantearLlave(letrasAptas.get(intRandom(letrasAptas.size(),0)),numerosAptos.get(
+                    intRandom(numerosAptos.size(),0)));
+            contadorIntentos++;
+            if(contadorIntentos>MAXINTENTOS){
+            	System.out.println("Llave no encontrada");
+            	return;
+            }
+        }
+        System.out.println("Intentos necesarios: "+contadorIntentos+TANDASAPRENDIZAJE);
+        System.out.println(posibleLlave);
+    }
+    
+    private String tantearLlave(char letra, char numero){
+        llave.setCharAt(7,letra);
+        llave.setCharAt(11,numero);
+        return aes.desencriptar(llave.toString(),TEXTOENCRIPTADO);
     }
     
 }
