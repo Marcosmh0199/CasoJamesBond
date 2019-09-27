@@ -6,4 +6,7 @@ public interface Constantes {
 	int TAMANOSUBGRUPONUMERO = 5;
 	int TANDASAPRENDIZAJE = 5;
 	int COMBSUBGRUPOS = 15;
+	int MAXINTENTOS = 1000;
+	String TEXTOENCRIPTADO = "xZwM7BWIpSjYyGFr9rhpEa+cYVtACW7yQKmyN6OYSCv0ZEg9jWbc6lKzzCxRSSIvOvli"
+			+ "mQZBMZOYnOwiA9yy3YU8zk4abFSItoW6Wj0ufQ0=";
 }
