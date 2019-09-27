@@ -142,19 +142,27 @@ public class Comportamiento implements Constantes{
     private void obtenerLlave(){
         ArrayList<Character> letrasAptas = new ArrayList(mejoresLetras);
         ArrayList<Character> numerosAptos = new ArrayList<>(mejoresNumeros);
+        ArrayList<Character[]> combinaciones = new ArrayList<>();
+        for(int letra = 0; letra < letrasAptas.size(); letra++){
+        	for(int numero = 0; numero < numerosAptos.size(); numero++){
+        		Character[] comb = {letrasAptas.get(letra),numerosAptos.get(numero)};
+        		combinaciones.add(comb);
+        	}
+        }
+        Collections.shuffle(combinaciones);
         int contadorIntentos = 0;
-        String posibleLlave = null;
-        while (posibleLlave == null){
-        	posibleLlave = tantearLlave(letrasAptas.get(intRandom(letrasAptas.size(),0)),numerosAptos.get(
-                    intRandom(numerosAptos.size(),0)));
+        String textoDesencriptado = null;
+        while (combinaciones.size() > 0){
+        	Character[] comb = combinaciones.remove(0);
+        	textoDesencriptado = tantearLlave(comb[LETRA],comb[NUMERO]);
             contadorIntentos++;
-            if(contadorIntentos>MAXINTENTOS){
-            	System.out.println("Llave no encontrada");
+            if(textoDesencriptado != null){
+            	System.out.println("Intentos necesarios: "+(contadorIntentos+TANDASAPRENDIZAJE));
+            	System.out.println(textoDesencriptado);
             	return;
             }
         }
-        System.out.println("Intentos necesarios: "+contadorIntentos+TANDASAPRENDIZAJE);
-        System.out.println(posibleLlave);
+        System.out.println("Llave no encontrada");
     }
     
     private String tantearLlave(char letra, char numero){
