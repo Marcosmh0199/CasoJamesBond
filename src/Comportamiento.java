@@ -109,4 +109,36 @@ public class Comportamiento implements Constantes{
         return ThreadLocalRandom.current().nextInt(min,max);
     }
     
+    public void aprender(int tandasAprendizaje){
+        if(tandasAprendizaje > TANDASAPRENDIZAJE){
+            return;
+        }
+        for(int grupos = 0; grupos < subGrupos.size(); grupos++){
+            for(int intentos = 0; intentos < COMBSUBGRUPOS; intentos++){
+                char letra = subGrupos.get(grupos).getLetra((int)doubleRandom(TAMANOSUBGRUPOLETRAS,0.0));
+                char numero = subGrupos.get(grupos).getNumero((int)doubleRandom(TAMANOSUBGRUPONUMERO,0.0));
+                if(tantearLlave(letra,numero)){
+                    subGrupos.get(grupos).aumentarFactibilidad();
+                }
+            }
+        }
+        aprender(tandasAprendizaje+1);
+    }
+    
+    private void afinar(){
+        Collections.sort(subGrupos, (s1, s2) -> Integer.valueOf(s2.getFactibilidad()).compareTo(s1.getFactibilidad()));
+        if(subGrupos.get(1).getFactibilidad() > 0){
+        	subGrupos = new ArrayList<>(subGrupos.subList(0,2));
+        }else{
+        	subGrupos = new ArrayList<>(subGrupos.subList(0,1));
+        }      
+        for(SubGrupo subGrupo:subGrupos){
+            HashSet<Character> letrasTmp = new HashSet(Arrays.asList(subGrupo.getLetras().toArray()));
+            mejoresLetras.retainAll(letrasTmp);
+            HashSet<Character> numerosTmp = new HashSet(Arrays.asList(subGrupo.getNumeros().toArray()));
+            mejoresNumeros.retainAll(numerosTmp);
+        }
+        //obtenerLlave();
+    }
+    
 }
