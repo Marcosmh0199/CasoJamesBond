@@ -13,11 +13,12 @@ public class Comportamiento implements Constantes{
     private ArrayList<SubGrupo> subGrupos;
     private HashSet<Character> mejoresLetras;
     private HashSet<Character> mejoresNumeros;
-    private StringBuilder llave = new StringBuilder("29dh120_dk1_3");
+    private StringBuilder llave;
     private Aes aes;
     
     public Comportamiento(){
     	setAes();
+    	setLlave();
     	setLetras();
         setNumeros();
         setSubGrupos();
@@ -31,7 +32,7 @@ public class Comportamiento implements Constantes{
 		return letras;
 	}
 
-	public void setLetras() {
+	private void setLetras() {
         this.letras = new ArrayList<>();
         for(char letra = 'a'; letra <= 'z'; letra++){
             letras.add(letra);
@@ -42,7 +43,7 @@ public class Comportamiento implements Constantes{
 		return numeros;
 	}
 
-	public void setNumeros() {
+	private void setNumeros() {
 		this.numeros = new ArrayList<>();
         for(char numero = '0'; numero <= '9'; numero++){
             numeros.add(numero);
@@ -53,7 +54,7 @@ public class Comportamiento implements Constantes{
 		return subGrupos;
 	}
 
-	public void setSubGrupos() {
+	private void setSubGrupos() {
         subGrupos = new ArrayList<>();
         SubGrupo subGrupo;
         for(int cantidadSubrupos = 0; cantidadSubrupos < CANTIDADSUBGRUPOS; cantidadSubrupos++){
@@ -75,7 +76,7 @@ public class Comportamiento implements Constantes{
 		return mejoresLetras;
 	}
 
-	public void setMejoresLetras() {
+	private void setMejoresLetras() {
 		this.mejoresLetras = new HashSet(Arrays.asList(letras.toArray()));
 	}
 
@@ -83,7 +84,7 @@ public class Comportamiento implements Constantes{
 		return mejoresNumeros;
 	}
 
-	public void setMejoresNumeros() {
+	private void setMejoresNumeros() {
 		this.mejoresNumeros = new HashSet(Arrays.asList(numeros.toArray()));
 	}
 
@@ -91,8 +92,8 @@ public class Comportamiento implements Constantes{
 		return llave;
 	}
 
-	public void setLlave(StringBuilder llave) {
-		this.llave = llave;
+	private void setLlave() {
+		this.llave = new StringBuilder("29dh120_dk1_3");;
 	}
 
 	public Aes getAes() {
@@ -111,7 +112,7 @@ public class Comportamiento implements Constantes{
         return ThreadLocalRandom.current().nextInt(min,max);
     }
     
-    public void aprender(int tandasAprendizaje){
+    private void aprender(int tandasAprendizaje){
         if(tandasAprendizaje > TANDASAPRENDIZAJE){
             return;
         }
